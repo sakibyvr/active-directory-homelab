@@ -1,13 +1,5 @@
-# 🧪 Active Directory Homelab (Windows Server 2022)
+# Active Directory Homelab (Windows Server 2022)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Project-Active%20Directory%20Lab-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Platform-Windows%20Server%202022-0078D6?style=for-the-badge&logo=windows" />
-  <img src="https://img.shields.io/badge/Hypervisor-VirtualBox-183A61?style=for-the-badge&logo=virtualbox" />
-  <img src="https://img.shields.io/badge/Focus-IT%20Support%20%7C%20SysAdmin-green?style=for-the-badge" />
-</p>
-
----
 ## 0. Table of Contents
 
 - [1. Project Overview](#1-project-overview)
@@ -17,312 +9,284 @@
 - [5. Client Setup and Domain Join](#5-client-setup-and-domain-join)
 - [6. Security Groups and Access Control](#6-security-groups-and-access-control)
 - [7. Delegation of Control Password Reset](#7-delegation-of-control-password-reset)
----
-
-## 📌 1. Project Overview
-
-This project demonstrates a **hands-on Active Directory home lab** built using:
-
-- **Windows Server 2022**
-- **Oracle VirtualBox**
-
-The objective is to simulate a real enterprise IT environment and gain practical experience in:
-
-- Active Directory deployment  
-- User and group management  
-- Domain-based authentication  
-- Access control using security groups  
-- Delegation of administrative tasks  
-- Troubleshooting system and configuration issues  
+- [8. Notes for Future Expansion](#8-notes-for-future-expansion)
 
 ---
 
-## 🏗️ 2. Lab Architecture
+## 1. Project Overview
 
+This project documents the process of building a functional Active Directory environment using Windows Server 2022 and VirtualBox.
+
+The goal of this lab is to simulate real-world IT infrastructure and gain hands-on experience in:
+
+- Deploying Active Directory Domain Services (AD DS)
+- Configuring DNS for domain environments
+- Managing users, groups, and organizational units
+- Implementing access control using security groups
+- Delegating administrative responsibilities
+- Troubleshooting system and configuration issues
+
+This lab is designed as both a learning project and a reference for future interview preparation.
+
+---
+
+## 2. Lab Architecture
 DC01 (Domain Controller)
 │
 ├── Active Directory (homelab.ca)
 ├── DNS Server
 │
-└── Client Machine
-└── WIN11-CL01 (Domain Joined)
+└── Client Machine (WIN11-CL01)
 
+### Environment Details
 
-### Components
-
-- **DC01** → Windows Server 2022 (Domain Controller)
-- **CL01** → Windows 11 Client Machine
-- **Domain** → homelab.ca
-- **Tools** → AD DS, DNS, RSAT
+- Domain Controller: Windows Server 2022 (DC01)
+- Client Machine: Windows 11 (CL01)
+- Domain Name: homelab.ca
+- Tools Used: AD DS, DNS, RSAT
+- Hypervisor: Oracle VirtualBox
 
 ---
 
-## ⚙️ 3. Windows Server Installation & Troubleshooting
+## 3. Windows Server Installation and Troubleshooting
 
-### ❌ Issue Encountered
+### Problem
 
 ![License Error](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/01-license-error.png)
 
-During installation, Windows Server failed with:
-
-> "Windows cannot find the Microsoft Software License Terms"
+During installation, Windows Server setup failed with a license-related error, even though the ISO file was valid.
 
 ---
 
-### 🔍 Troubleshooting Steps
+### Investigation
 
-- Verified virtualization settings in BIOS  
-- Adjusted VM RAM and CPU allocation  
-- Checked Windows security features  
+The following checks were performed:
 
-Despite these steps, the issue persisted.
+- Verified virtualization support in BIOS
+- Adjusted CPU and RAM allocation for the VM
+- Reviewed system security settings
 
----
-
-### 🧠 Root Cause
-
-The issue was caused by **VirtualBox Unattended Installation**, which interfered with the setup process by skipping required steps.
+These steps did not resolve the issue.
 
 ---
 
-### ✅ Resolution
+### Root Cause
 
-- Recreated the virtual machine  
-- Disabled unattended installation  
-- Restarted installation  
+The issue was caused by VirtualBox's unattended installation feature, which interfered with the normal setup process.
 
 ---
 
-### ✔️ Result
+### Resolution
+
+- Recreated the virtual machine
+- Disabled unattended installation
+- Reinstalled Windows Server
+
+---
+
+### Result
 
 ![Server Installed](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/02-server-installed.png)
 
-Windows Server installed successfully and Server Manager launched correctly.
+The installation completed successfully and the server booted into Server Manager.
 
 ---
 
-### 🧠 Key Learning
+### What I Learned
 
-- Always validate hypervisor configuration  
-- Automation tools can introduce hidden issues  
-- Structured troubleshooting is essential in IT  
-
----
-
-## 🏢 4. Domain Controller Setup (DC01)
-
-### ⚙️ Configuration Steps
-
-- Installed **Active Directory Domain Services (AD DS)**  
-- Installed **DNS Server**  
-- Promoted server to Domain Controller  
-- Created new forest: `homelab.ca`  
-- Configured DSRM password  
+- Installation failures are not always caused by corrupted media
+- Hypervisor settings can directly impact OS behavior
+- A structured troubleshooting approach helps isolate issues effectively
 
 ---
 
-### 🔐 Verification
+## 4. Domain Controller Setup DC01
+
+### Configuration
+
+The server was configured as a Domain Controller using the following steps:
+
+- Installed Active Directory Domain Services (AD DS)
+- Installed DNS Server role
+- Promoted the server to a Domain Controller
+- Created a new forest: homelab.ca
+- Configured Directory Services Restore Mode (DSRM) password
+
+---
+
+### Verification
 
 ![Domain Login](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/03-login-domain.png)
 
-Successfully logged in using:
-
-HOMELAB\Administrator  
-
+Logged in using the domain administrator account to confirm successful promotion.
 
 ---
 
 ![DC Ready](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/04-dc-ready.png)
 
-Server Manager confirms:
-
-- AD DS running  
-- DNS running  
-- System healthy  
+Verified that AD DS and DNS services are running correctly.
 
 ---
 
-### 🧠 Key Learning
+### What I Learned
 
-- DNS is critical for Active Directory functionality  
-- Domain Controllers centralize authentication  
-- Always validate services after promotion  
-
----
-
-## 💻 5. Client Setup & Domain Join
-
-### ⚙️ Client Configuration
-
-- Created VM: **WIN11-CL01**  
-- Set DNS → DC01 IP address  
-- Verified connectivity  
+- DNS is essential for Active Directory functionality
+- Domain Controllers centralize authentication and management
+- Service validation is critical after configuration
 
 ---
 
-### 🔗 Domain Join
+## 5. Client Setup and Domain Join
+
+### Configuration
+
+- Created Windows 11 client VM (CL01)
+- Configured DNS to point to the Domain Controller
+- Verified network connectivity
+
+---
+
+### Domain Join
 
 ![Domain Join](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/05-domain-join.png)
 
-Client joined domain: `homelab.ca`
+Joined the client machine to the domain homelab.ca.
 
 ---
 
 ![Domain Joined](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/06-domain-joined.png)
 
-Confirmed:
-
-- Computer name → WIN11-CL01.homelab.ca  
-- Domain → homelab.ca  
+Confirmed domain membership after system restart.
 
 ---
 
-### 🗂️ Organizational Units
+### Organizational Structure
 
 ![OU Structure](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/07-ou-structure.png)
 
-Created OUs:
+Created Organizational Units:
 
-- Employees  
-- IT  
-- Computers  
+- Employees
+- IT
+- Computers
 
 ---
 
-### ✔️ Verification
+### Verification
 
 ![Computer Added](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/08-computer-added.png)
 
-Client appears in Active Directory  
+Client machine appears in Active Directory.
 
 ---
 
 ![Client Login](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/09-client-login.png)
 
-Successfully logged in using domain user  
+Successfully authenticated using a domain user account.
 
 ---
 
-### 🧠 Key Learning
+### What I Learned
 
-- DNS is essential for domain communication  
-- Domain join validates infrastructure  
-- Authentication confirms correct setup  
-
----
-
-## 🔐 6. Security Groups & Access Control
-
-### 🎯 Objective
-
-- Create security groups  
-- Assign users to groups  
-- Verify group membership  
+- DNS configuration is critical for domain communication
+- Domain join validates infrastructure setup
+- Authentication confirms proper integration between systems
 
 ---
 
-### 🛠️ Steps
+## 6. Security Groups and Access Control
 
-#### 1. Open ADUC
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/10-open-active-directory-users-and-computers.png)
+### Objective
 
-#### 2. Review Domain Structure
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/11-domain-structure-overview.png)
-
-#### 3. Create New Group
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/12-create-new-group-menu.png)
-
-#### 4. Create IT_Group
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/13-create-it-group.png)
-
-#### 5. Create Employees_Group
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/14-create-employees-group.png)
-
-#### 6. Verify OU Structure
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/15-employees-ou-structure.png)
-
-#### 7. Add User to Group
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/16-add-user-to-group.png)
-
-#### 8. Verify Membership (Group Side)
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/17-group-members-tab.png)
-
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/18-group-members-confirmation.png)
-
-#### 9. Verify Membership (User Side)
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/19-user-member-of-tab.png)
+To implement structured access control using security groups.
 
 ---
 
-### 🧠 Key Learning
+### Steps Performed
 
-- Security groups simplify permission management  
-- OUs organize the environment logically  
-- Always verify membership from both perspectives  
+#### Open Active Directory Users and Computers
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/10-open-active-directory-users-and-computers.png" width="700"/>
 
----
+#### Review Domain Structure
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/11-domain-structure-overview.png" width="700"/>
 
-## 🔐 7. Delegation of Control (Password Reset)
+#### Create Security Groups
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/12-create-new-group-menu.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/13-create-it-group.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/14-create-employees-group.png" width="700"/>
 
-### 🎯 Objective
+#### Verify Organizational Units
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/15-employees-ou-structure.png" width="700"/>
 
-Allow IT support users to reset passwords without full administrative privileges.
+#### Add User to Group
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/16-add-user-to-group.png" width="700"/>
 
----
-
-### ⚙️ Setup
-
-- Created groups: **HR_Group**, **IT_Group**  
-- Assigned users accordingly  
-
----
-
-### 🛠️ Delegation Steps
-
-#### 1. Start Delegation Wizard
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/20-delegation-start.png)
-
-#### 2. Select IT_Group
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/21-select-itgroup.png)
-
-#### 3. Assign Permissions
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/22-permission.png)
+#### Verify Membership
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/17-group-members-tab.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/18-group-members-confirmation.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/19-user-member-of-tab.png" width="700"/>
 
 ---
 
-### 💻 RSAT Setup
+### What I Learned
 
-Installed RSAT on client machine to manage AD remotely.
-
----
-
-### ✅ Verification
-
-#### Reset Password
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/23-reset-password.png)
-
-#### Confirmation
-![Step](https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/24-success.png)
+- Security groups simplify permission management
+- Organizational Units help structure environments logically
+- Membership should be verified from both group and user perspectives
 
 ---
 
-### 🔍 Validation
+## 7. Delegation of Control Password Reset
 
-- Password reset successful  
-- Unauthorized actions restricted  
+### Objective
 
----
-
-### 🧠 Key Learning
-
-- Delegation enforces least privilege  
-- RBAC improves security and scalability  
-- RSAT enables remote administration  
+To allow a non-administrative user to reset passwords without granting full administrative privileges.
 
 ---
 
-## 👨‍💻 Author
+### Configuration
+
+- Created IT_Group and HR_Group
+- Assigned users to respective groups
+
+---
+
+### Delegation Steps
+
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/20-delegation-start.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/21-select-itgroup.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/22-permission.png" width="700"/>
+
+---
+
+### Verification
+
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/23-reset-password.png" width="700"/>
+<img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/24-success.png" width="700"/>
+
+---
+
+### What I Learned
+
+- Delegation supports the principle of least privilege
+- Role-Based Access Control improves security
+- Administrative tasks can be distributed without exposing critical permissions
+
+---
+
+## 8. Notes for Future Expansion
+
+This section is intentionally left open for future updates.
+
+Planned additions:
+
+- Group Policy Objects (GPO)
+- Shared folders and permissions
+- Active Directory auditing and logging
+- Security monitoring scenarios
+
+---
+
+## Author
 
 Najmus Sakib
-
----
