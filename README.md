@@ -9,24 +9,25 @@
 - [5. Client Setup and Domain Join](#5-client-setup-and-domain-join)
 - [6. Security Groups and Access Control](#6-security-groups-and-access-control)
 - [7. Delegation of Control Password Reset](#7-delegation-of-control-password-reset)
-- [8. Notes for Future Expansion](#8-notes-for-future-expansion)
+- [8. Key Concepts and Real World Mapping](#8-key-concepts-and-real-world-mapping)
+- [9. Notes for Future Expansion](#9-notes-for-future-expansion)
 
 ---
 
 ## 1. Project Overview
 
-This project documents the process of building a functional Active Directory environment using Windows Server 2022 and VirtualBox.
+This project documents the step-by-step process of building an Active Directory environment using Windows Server 2022 in a virtualized lab.
 
-The objective of this lab is to simulate a real-world IT environment and develop hands-on experience in:
+The purpose of this lab is to simulate a real enterprise IT environment and develop practical, job-ready skills in:
 
-- Deploying Active Directory Domain Services (AD DS)  
-- Configuring DNS for domain environments  
-- Managing users, groups, and organizational units  
-- Implementing access control using security groups  
-- Delegating administrative responsibilities  
-- Troubleshooting system and configuration issues  
+- Active Directory deployment and configuration  
+- Domain-based authentication and identity management  
+- User, group, and Organizational Unit (OU) management  
+- Access control using security groups  
+- Delegation of administrative tasks using least privilege  
+- Troubleshooting system-level and configuration issues  
 
-This lab also serves as a structured reference for interview preparation and real-world IT scenarios.
+This repository also serves as a structured reference for interview preparation and real-world troubleshooting scenarios.
 
 ---
 
@@ -43,37 +44,45 @@ DC01 (Domain Controller)
 
 - Domain Controller: Windows Server 2022 (DC01)  
 - Client Machine: Windows 11 (CL01)  
-- Domain Name: homelab.ca  
-- Tools Used: AD DS, DNS, RSAT  
+- Domain: homelab.ca  
 - Hypervisor: Oracle VirtualBox  
+- Tools: Active Directory Domain Services (AD DS), DNS, RSAT  
 
 ---
 
 ## 3. Windows Server Installation and Troubleshooting
 
-### Problem
+### Overview
+
+The first step was to install Windows Server 2022 in a virtualized environment. This stage also involved troubleshooting a setup failure.
+
+---
+
+### Issue Encountered
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/01-license-error.png" width="50%" />
 </p>
 
-During installation, Windows Server setup failed with a license-related error despite using a valid ISO.
+The installation failed with a license-related error even though the ISO file was valid.
 
 ---
 
-### Investigation
+### Troubleshooting Process
 
-- Verified virtualization support in BIOS  
-- Adjusted CPU and RAM allocation  
-- Reviewed system security configurations  
+To isolate the issue, I followed a structured troubleshooting approach:
 
-These checks did not resolve the issue.
+- Verified BIOS virtualization support  
+- Adjusted VM resource allocation (CPU and RAM)  
+- Reviewed Windows security features (e.g., Core Isolation)  
+
+Despite these checks, the issue persisted.
 
 ---
 
 ### Root Cause
 
-The failure was caused by VirtualBox unattended installation, which interfered with the Windows setup process.
+The issue was caused by VirtualBox Unattended Installation, which interfered with the standard Windows setup process by skipping required configuration steps.
 
 ---
 
@@ -81,7 +90,7 @@ The failure was caused by VirtualBox unattended installation, which interfered w
 
 - Recreated the virtual machine  
 - Disabled unattended installation  
-- Restarted the installation  
+- Restarted installation  
 
 ---
 
@@ -91,21 +100,27 @@ The failure was caused by VirtualBox unattended installation, which interfered w
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/02-server-installed.png" width="50%" />
 </p>
 
-The server installed successfully and booted into Server Manager.
+Windows Server installed successfully and loaded into Server Manager.
 
 ---
 
-### What I Learned
+### What This Demonstrates
 
-- Installation issues are not always caused by corrupted media  
-- Hypervisor configurations can impact OS behavior  
-- A structured troubleshooting approach is essential  
+- Ability to troubleshoot installation failures  
+- Understanding of hypervisor-level configurations  
+- Use of systematic troubleshooting methodology  
 
 ---
 
 ## 4. Domain Controller Setup DC01
 
-### Configuration
+### Overview
+
+In this step, the standalone server was converted into a Domain Controller to enable centralized identity and access management.
+
+---
+
+### Configuration Steps
 
 - Installed Active Directory Domain Services (AD DS)  
 - Installed DNS Server  
@@ -129,35 +144,41 @@ Successfully logged in using the domain administrator account.
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/04-dc-ready.png" width="50%" />
 </p>
 
-Verified AD DS and DNS services are running correctly.
+Verified that AD DS and DNS services are running correctly.
 
 ---
 
-### What I Learned
+### What This Demonstrates
 
-- DNS is essential for Active Directory functionality  
-- Domain Controllers centralize authentication  
-- Service validation is critical after configuration  
+- Understanding of domain infrastructure  
+- Knowledge of AD DS and DNS integration  
+- Ability to configure centralized authentication systems  
 
 ---
 
 ## 5. Client Setup and Domain Join
 
-### Configuration
+### Overview
 
-- Created Windows 11 client VM (CL01)  
-- Configured DNS to point to the Domain Controller  
-- Verified connectivity  
+A Windows 11 client machine was configured and joined to the domain to validate authentication and connectivity.
 
 ---
 
-### Domain Join
+### Configuration
+
+- Created client VM (WIN11-CL01)  
+- Configured DNS to point to DC01  
+- Verified network connectivity  
+
+---
+
+### Domain Join Process
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/05-domain-join.png" width="50%" />
 </p>
 
-Joined the client machine to the domain.
+Joined the client to the domain homelab.ca.
 
 ---
 
@@ -165,17 +186,17 @@ Joined the client machine to the domain.
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/06-domain-joined.png" width="50%" />
 </p>
 
-Confirmed domain membership after restart.
+Confirmed successful domain membership.
 
 ---
 
-### Organizational Units
+### Organizational Unit Structure
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/07-ou-structure.png" width="50%" />
 </p>
 
-Created structured OUs for better organization.
+Created structured Organizational Units to organize users and computers.
 
 ---
 
@@ -193,27 +214,33 @@ Client appears in Active Directory.
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/09-client-login.png" width="50%" />
 </p>
 
-Successfully authenticated using a domain account.
+Successful domain authentication confirmed.
 
 ---
 
-### What I Learned
+### What This Demonstrates
 
-- DNS configuration is critical for domain communication  
-- Domain join validates infrastructure setup  
-- Authentication confirms correct system integration  
+- Understanding of domain join process  
+- Importance of DNS in AD environments  
+- Validation of authentication workflow  
 
 ---
 
 ## 6. Security Groups and Access Control
 
-### Objective
+### Overview
 
-To implement structured access control using security groups.
+Security groups were created to implement structured and scalable access control.
 
 ---
 
-### Steps Performed
+### Why This Matters
+
+In enterprise environments, permissions are assigned to groups rather than individual users to improve scalability and reduce administrative overhead.
+
+---
+
+### Implementation Steps
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/10-open-active-directory-users-and-computers.png" width="50%" />
@@ -257,19 +284,25 @@ To implement structured access control using security groups.
 
 ---
 
-### What I Learned
+### What This Demonstrates
 
-- Security groups simplify permission management  
-- Organizational Units provide logical structure  
-- Membership validation should be done from both perspectives  
+- Understanding of role-based access control  
+- Ability to design scalable permission structures  
+- Verification of access from both group and user perspectives  
 
 ---
 
 ## 7. Delegation of Control Password Reset
 
+### Overview
+
+Delegation of Control was implemented to simulate real-world helpdesk operations.
+
+---
+
 ### Objective
 
-To delegate password reset permissions without granting full administrative access.
+Allow IT support users to reset passwords without granting full administrative privileges.
 
 ---
 
@@ -308,23 +341,35 @@ To delegate password reset permissions without granting full administrative acce
 
 ---
 
-### What I Learned
+### What This Demonstrates
 
-- Delegation enforces least privilege  
-- RBAC improves security and scalability  
-- Administrative tasks can be distributed safely  
+- Implementation of least privilege principle  
+- Understanding of delegation in Active Directory  
+- Simulation of real IT support workflows  
 
 ---
 
-## 8. Notes for Future Expansion
+## 8. Key Concepts and Real World Mapping
+
+This lab reflects several real-world IT concepts:
+
+- Domain Controllers → Central authentication servers  
+- DNS → Core dependency for AD communication  
+- Security Groups → Scalable access control mechanism  
+- Delegation → Helpdesk-level privilege management  
+- RSAT → Remote administrative tools used in enterprise environments  
+
+---
+
+## 9. Notes for Future Expansion
 
 This section will be updated as the lab evolves.
 
 Planned additions:
 
 - Group Policy Objects (GPO)  
-- Shared folders and permissions  
-- Active Directory auditing  
+- Shared folder permissions  
+- Active Directory auditing and logging  
 - Security monitoring scenarios  
 
 ---
