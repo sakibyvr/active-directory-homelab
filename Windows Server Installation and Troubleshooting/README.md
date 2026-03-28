@@ -1,5 +1,4 @@
-
-# 01 - Windows Server Installation & Troubleshooting
+Windows Server Installation & Troubleshooting
 
 ## 📖 Overview
 
