@@ -4,13 +4,12 @@
 
 - [1. Project Overview](#1-project-overview)
 - [2. Lab Architecture](#2-lab-architecture)
-- [3. Windows Server Installation and Troubleshooting](#3-windows-server-installation-and-troubleshooting)
-- [4. Domain Controller Setup DC01](#4-domain-controller-setup-dc01)
-- [5. Client Setup and Domain Join](#5-client-setup-and-domain-join)
-- [6. Security Groups and Access Control](#6-security-groups-and-access-control)
-- [7. Delegation of Control Password Reset](#7-delegation-of-control-password-reset)
-- [8. Key Concepts and Real World Mapping](#8-key-concepts-and-real-world-mapping)
-- [9. Notes for Future Expansion](#9-notes-for-future-expansion)
+- [3. Domain Controller Setup DC01](#3-domain-controller-setup-dc01)
+- [4. Client Setup and Domain Join](#4-client-setup-and-domain-join)
+- [5. Security Groups and Access Control](#5-security-groups-and-access-control)
+- [6. Delegation of Control Password Reset](#6-delegation-of-control-password-reset)
+- [7. Key Concepts and Real World Mapping](#7-key-concepts-and-real-world-mapping)
+- [8. Notes for Future Expansion](#8-notes-for-future-expansion)
 
 ---
 
@@ -50,69 +49,7 @@ DC01 (Domain Controller)
 
 ---
 
-## 3. Windows Server Installation and Troubleshooting
-
-### Overview
-
-The first step was to install Windows Server 2022 in a virtualized environment. This stage also involved troubleshooting a setup failure.
-
----
-
-### Issue Encountered
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/01-license-error.png" width="50%" />
-</p>
-
-The installation failed with a license-related error even though the ISO file was valid.
-
----
-
-### Troubleshooting Process
-
-To isolate the issue, I followed a structured troubleshooting approach:
-
-- Verified BIOS virtualization support  
-- Adjusted VM resource allocation (CPU and RAM)  
-- Reviewed Windows security features (e.g., Core Isolation)  
-
-Despite these checks, the issue persisted.
-
----
-
-### Root Cause
-
-The issue was caused by VirtualBox Unattended Installation, which interfered with the standard Windows setup process by skipping required configuration steps.
-
----
-
-### Resolution
-
-- Recreated the virtual machine  
-- Disabled unattended installation  
-- Restarted installation  
-
----
-
-### Result
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/02-server-installed.png" width="50%" />
-</p>
-
-Windows Server installed successfully and loaded into Server Manager.
-
----
-
-### What This Demonstrates
-
-- Ability to troubleshoot installation failures  
-- Understanding of hypervisor-level configurations  
-- Use of systematic troubleshooting methodology  
-
----
-
-## 4. Domain Controller Setup DC01
+## 3. Domain Controller Setup DC01
 
 ### Overview
 
@@ -156,7 +93,7 @@ Verified that AD DS and DNS services are running correctly.
 
 ---
 
-## 5. Client Setup and Domain Join
+## 4. Client Setup and Domain Join
 
 ### Overview
 
@@ -226,7 +163,7 @@ Successful domain authentication confirmed.
 
 ---
 
-## 6. Security Groups and Access Control
+## 5. Security Groups and Access Control
 
 ### Overview
 
@@ -292,7 +229,7 @@ In enterprise environments, permissions are assigned to groups rather than indiv
 
 ---
 
-## 7. Delegation of Control Password Reset
+## 6. Delegation of Control Password Reset
 
 ### Overview
 
@@ -349,7 +286,7 @@ Allow IT support users to reset passwords without granting full administrative p
 
 ---
 
-## 8. Key Concepts and Real World Mapping
+## 7. Key Concepts and Real World Mapping
 
 This lab reflects several real-world IT concepts:
 
@@ -361,7 +298,7 @@ This lab reflects several real-world IT concepts:
 
 ---
 
-## 9. Notes for Future Expansion
+## 8. Notes for Future Expansion
 
 This section will be updated as the lab evolves.
 
