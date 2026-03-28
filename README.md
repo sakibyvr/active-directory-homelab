@@ -8,17 +8,15 @@
 </p>
 
 ---
+## 0. Table of Contents
 
-## 📌 0. Table of Contents
-
-## 1. Project Overview
-## 2. Lab Architecture
-## 3. Windows Server Installation and Troubleshooting
-## 4. Domain Controller Setup DC01
-## 5. Client Setup and Domain Join
-## 6. Security Groups and Access Control
-## 7. Delegation of Control Password Reset
-
+- [1. Project Overview](#1-project-overview)
+- [2. Lab Architecture](#2-lab-architecture)
+- [3. Windows Server Installation and Troubleshooting](#3-windows-server-installation-and-troubleshooting)
+- [4. Domain Controller Setup DC01](#4-domain-controller-setup-dc01)
+- [5. Client Setup and Domain Join](#5-client-setup-and-domain-join)
+- [6. Security Groups and Access Control](#6-security-groups-and-access-control)
+- [7. Delegation of Control Password Reset](#7-delegation-of-control-password-reset)
 ---
 
 ## 📌 1. Project Overview
