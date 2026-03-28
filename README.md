@@ -286,6 +286,17 @@ Planned additions:
 - Security monitoring scenarios
 
 ---
+### Verification
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/23-reset-password.png" width="50%" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sakibyvr/active-directory-homelab/main/screenshots/24-success.png" width="50%" />
+</p>
+
+---
 
 ## Author
 
